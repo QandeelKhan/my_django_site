@@ -24,7 +24,7 @@ def post_new(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
+            # post.published_date = timezone.now()
             post.save()
             return redirect('blog:post_detail', post.id)
     else:
@@ -39,7 +39,7 @@ def post_edit(request, post_id):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
+            # post.published_date = timezone.now()
             post.save() # we cannot write the commit = True if we want so,because by default save() method have commit = True.
             return redirect('blog:post_detail', post.id)
 
@@ -47,3 +47,12 @@ def post_edit(request, post_id):
         form = PostForm(instance=post)
         stuff_for_frontend = {'form': form}
     return render(request, 'blog/post_edit.html', stuff_for_frontend)
+
+def post_draft_list(request):
+    posts = Post.objects.filter(published_date__isnull=True).order_by("-created_date")
+    stuff_for_frontend = {'posts': posts}
+    return render(request, 'blog/post_draft_list.html', stuff_for_frontend)
+def post_publish(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    post.publish()
+    return redirect('blog:post_detail', post.id)
