@@ -6,7 +6,9 @@
     <div class="date">
         {{ post.published_date }}
     </div>
+    {% if user.is_authenticated %}      
     <a href="{% url 'blog:post_edit' post.id %}"><i class="fas fa-edit fa-2x fa-spin" style="color: blue;"></i></a>
+    {% endif %}
     {% endif %}
     <h1>{{ post.title }}</h1>
     <p>{{ post.text|linebreaksbr }}</p>
