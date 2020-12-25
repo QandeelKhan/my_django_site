@@ -8,6 +8,7 @@ pylint = "*"
 
 [packages]
 django = "*"
+fontawesome-free = "*"
 
 [requires]
 python_version = "3.8"
