@@ -59,7 +59,7 @@ def post_publish(request, post_id):
     post.publish()
     return redirect('blog:post_detail', post.id)
 
-
+@login_required
 def add_comment_to_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     if request.method == 'POST':
@@ -75,13 +75,13 @@ def add_comment_to_post(request, post_id):
         form = CommentForm()
         stuff_for_frontend = {'form': form}
         return render(request, 'blog/add_comment_to_post.html', stuff_for_frontend)
-
+@login_required
 def comment_remove(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id) 
     comment.delete()
     return redirect('blog:post_detail', comment.post.id)
 
-
+@login_required
 def comment_approve(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     comment.approve()
