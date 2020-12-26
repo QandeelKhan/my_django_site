@@ -80,3 +80,9 @@ def comment_remove(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id) 
     comment.delete()
     return redirect('blog:post_detail', comment.post.id)
+
+
+def comment_approve(request, comment_id):
+    comment = get_object_or_404(Comment, pk=comment_id)
+    comment.approve()
+    return redirect('blog:post_detail', comment.post.id)

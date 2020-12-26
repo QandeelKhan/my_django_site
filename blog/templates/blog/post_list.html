@@ -12,6 +12,9 @@
         <a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a>
     </h1>
     <p>{{ post.text|linebreaksbr }}</p>
+
+    <!-- showing approved comments at home page "post_list" -->
+    <a href="{% url 'blog:post_detail' post.id %}">Comments: {{ post.approved_comments.count }}</a>
 </div>
 {% endfor %}
 {% endblock %}
