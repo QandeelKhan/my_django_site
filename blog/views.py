@@ -2,7 +2,7 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 # Create your views here.
 def post_list(request):
@@ -58,3 +58,20 @@ def post_publish(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     post.publish()
     return redirect('blog:post_detail', post.id)
+
+
+def add_comment_to_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect('blog:post_detail', post.id)
+
+    else:
+        form = CommentForm()
+        stuff_for_frontend = {'form': form}
+        return render(request, 'blog/add_comment_to_post.html', stuff_for_frontend)

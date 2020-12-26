@@ -22,3 +22,13 @@ class Post(models.Model):
         # return f"({self.title} by {self.author})"
         return self.title
     
+class Comment(models.Model):
+    post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, related_name='comments') #that related name is used when we want to access our all comments of a specific post.
+    author = models.CharField(max_length=200)
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.text
+    
+
