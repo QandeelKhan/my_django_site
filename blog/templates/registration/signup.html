@@ -6,7 +6,7 @@
     <div class="panel panel-default" style="width: 400px; margin: 0 auto;">
         <h3 style="text-align: center; font-family: sans-serif;">SignUp for your today.</h3>
         <div class="panel-body">
-            
+            {% csrf_token %}
             {% crispy form %}
         </div>
     </div>
