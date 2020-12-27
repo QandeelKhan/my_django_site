@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+<!-- loading our markdownify:first we need to make the folder as a package by creating __init__.py in it otherwise will not load here -->
+{% load markdownify %}
+
 {% block title %}{{post.title}}{% endblock %}
 {% block content %}
 <div class="post">
@@ -13,9 +16,14 @@
     {% if user.is_authenticated %}      
         <a href="{% url 'blog:post_edit' post.id %}"><i class="fas fa-edit fa-2x fa-spin" style="color: blue;"></i></a>
     {% endif %}
+
+
     <h1>{{ post.title }}</h1>
-    <p>{{ post.text|linebreaksbr }}</p>
+    <p>{{ post.text | markdown | safe }}</p>
+    {% comment %} adding markdownify feature rather then above line {% endcomment %}
+    {% comment %} <p>{{ post.text|linebreaksbr }}</p> {% endcomment %}
 </div>
+
     <hr>
     <a href="{% url 'blog:add_comment_to_post' post.id %}" class="btn btn-secondary">Add comment</a>    
     {% for comment in post.comments.all %}
@@ -33,7 +41,7 @@
                 {% endif %}
                     
                 <strong>{{ comment.author }}</strong>
-                <p>{{ comment.text }}</p>
+                <p>{{ comment.text | markdown | safe | linebreaksbr }}</p>
                     
             </div>
         {% endif %}
