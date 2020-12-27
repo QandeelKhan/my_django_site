@@ -107,8 +107,8 @@ def signup(request):
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             login(request, new_user)
-            return redirect('registration/login.html')
+            return redirect('/')
         
     else:
         form = UserForm()
-    return render(request, 'registration/signup.html', {'form': form})
+    return render(request, 'blog/signup.html', {'form': form})
