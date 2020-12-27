@@ -60,6 +60,13 @@ def post_publish(request, post_id):
     return redirect('blog:post_detail', post.id)
 
 @login_required
+def post_delete(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    post.delete()
+    # return redirect('blog:post_list', post.id) cannot redirect it to url blog:post_list because after deleting the post program again going to find primary_key post.id of that post which is not exist in program after deleting the post so we use a backslash here because it don't check for primary key in return
+    return redirect('/', post.id)
+
+@login_required
 def add_comment_to_post(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     if request.method == 'POST':
