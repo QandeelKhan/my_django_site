@@ -2,7 +2,10 @@ from django.shortcuts import render,get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from .models import Post, Comment
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, UserForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login
+
 
 # Create your views here.
 def post_list(request):
@@ -93,3 +96,19 @@ def comment_approve(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     comment.approve()
     return redirect('blog:post_detail', comment.post.id)
+
+
+# register
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            new_user = User.objects.create_user(**form.cleaned_data)
+            login(request, new_user)
+            return redirect('login.html')
+        
+    else:
+        form = UserForm()
+    return render(request, 'registration/signup.html', {'form': form})
+        
