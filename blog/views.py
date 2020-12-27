@@ -89,13 +89,14 @@ def add_comment_to_post(request, post_id):
 def comment_remove(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id) 
     comment.delete()
+    # return redirect('blog:post_detail', comment.post.id)
     return redirect('blog:post_detail', comment.post.id)
 
 @login_required
 def comment_approve(request, comment_id):
     comment = get_object_or_404(Comment, pk=comment_id)
     comment.approve()
-    return redirect('blog:post_detail', comment.post.id)
+    return redirect('blog:post_detail', comment.post.id) #as we know this is reverse view function after something happening on front and so here we cannot return the reverse function by passing comment i.d,we have to return the post i.d to i.t after removing comment from front end,which exactly we do here.
 
 
 # register
@@ -106,9 +107,8 @@ def signup(request):
         if form.is_valid():
             new_user = User.objects.create_user(**form.cleaned_data)
             login(request, new_user)
-            return redirect('login.html')
+            return redirect('registration/login.html')
         
     else:
         form = UserForm()
     return render(request, 'registration/signup.html', {'form': form})
-        
