@@ -9,6 +9,10 @@ pylint = "*"
 [packages]
 django = "*"
 fontawesome-free = "*"
+mistune = "*"
+pygments = "*"
+markdownify = "*"
+markdown = "*"
 
 [requires]
 python_version = "3.8"
